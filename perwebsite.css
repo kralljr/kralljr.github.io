@@ -1,0 +1,27 @@
+body {	background-color: #888c6c;	border-color: #000000;	color: #f8ffc5;	font-family: Cambria, Arial, Arial;	font-weight: lighter;	margin: 1in;}h1 {	background-color: black;	border-color: #000000;	color: #f8ffc5;	font-family: Cambria, Arial, Arial;	font-size: large;	font-weight: lighter;	text-align: left;	text-indent: .5in;}h2 {	background-color: #888c6c;	color: #f8ffc5;	font-size: large;	font-weight: lighter;}a {	background-color: #888c6c;	border-color: #000000;	color: #000000;	text-decoration: none;}h3 {	background-color: #888c6c;	color: #3c3c2f;	font-size: small;	text-align: center;}h4 {	background-color: #888c6c;	color: #3c3c2f;	font-size: large;}h5 {	background-color: #888c6c;	color: #f8ffc5;	font-size: medium;	text-align: center;}td {	border-color: #000000;}
+
+P.stb { margin-top: 12pt }
+
+html, body{
+height:100%;
+margin:0;
+padding:0;
+min-height:100%;
+}
+#contents{
+min-height:95%;   
+margin:1in; 
+position:relative;
+}
+
+
+#footer{
+position:relative; 
+top:-10%;
+height:5%;
+}
+
+
+
+
+
