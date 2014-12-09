@@ -1,4 +1,4 @@
 AuthType Basic
 AuthName "restricted area"
-AuthUserFile /IntrotoRepi/ .htpasswd
+AuthUserFile /IntrotoRepi/.htpasswd
 require valid-user
