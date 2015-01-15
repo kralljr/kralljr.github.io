@@ -1655,7 +1655,7 @@ ls()
 <div class="slideContent" >
 <p>Example using .csv file</p>
 
-<pre><code class="r">flu &lt;- read.csv(&quot;googleflu.csv&quot;, stringsAsFactors = F)
+<pre><code class="r">flu &lt;- read.csv(&quot;googleflu.csv&quot;, stringsAsFactors = FALSE)
 head(flu)
 </code></pre>
 
@@ -1683,8 +1683,27 @@ head(flu)
 <p>Example using .xls or .xlsx file</p>
 
 <pre><code class="r">library(XLConnect)
-flu &lt;- readWorksheet(loadWorkbook(&quot;googleflu.xlsx&quot;), 1)
-head(flu)
+wkbook_flu &lt;- loadWorkbook(&quot;googleflu.xlsx&quot;)
+class(wkbook_flu)
+</code></pre>
+
+<pre><code>[1] &quot;workbook&quot;
+attr(,&quot;package&quot;)
+[1] &quot;XLConnect&quot;
+</code></pre>
+
+<pre><code class="r">flu &lt;- readWorksheet(wkbook_flu, 1)
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>Getting data into R</h3>
+<div class="slideContent" >
+<p>Example using .xls or .xlsx file</p>
+
+<pre><code class="r">head(flu)
 </code></pre>
 
 <pre><code>        Date United.States Georgia Atlanta HHSRegion4
@@ -1746,7 +1765,7 @@ run;
 <li>Then use <code>read.csv</code> function in R </li>
 </ul>
 
-<pre><code class="r">flu &lt;- read.csv(&quot;googleflu.csv&quot;, stringsAsFactors = F)
+<pre><code class="r">flu &lt;- read.csv(&quot;googleflu.csv&quot;, stringsAsFactors = FALSE)
 </code></pre>
 
 </div>
