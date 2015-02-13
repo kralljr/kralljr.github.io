@@ -49,7 +49,7 @@ t_agesex <- t.test(age_female, age_male)
 # Perform a t-test for
 # H0: mu1 = mu2
 # H1: mu1 < mu2
-
+t_agesex <- t.test(age_female, age_male, alternative = "less")
 
 
 
@@ -59,7 +59,7 @@ t_agesex <- t.test(age_female, age_male)
 # First make a table of values
 table_pneumo <- table(vlbw$pneumo)
 table_pneumo
-table_pneumo <- matrix(c(127, 518), ncol = 2)
+table_pneumo <- matrix(c(23, 151), ncol = 2)
 
 #Is the proportion of pneumothorax in low birthweight infants different than 
 # 6.3%?
@@ -76,7 +76,7 @@ prop.test(table_pneumo, p = 0.063)
 table_pneumo <- table(twin = vlbw$twn, pneumo = vlbw$pneumo)
 table_pneumo
 # Reformat results
-table_pneumo <- matrix(c(95, 32, 415, 102), ncol = 2)
+table_pneumo <- matrix(c(17, 6, 115, 36), ncol = 2)
 colnames(table_pneumo) <- c("Pneumo", "No pneumo")
 rownames(table_pneumo) <- c("Not twin", "Twin")
 
@@ -84,7 +84,7 @@ rownames(table_pneumo) <- c("Not twin", "Twin")
 # In-class question:
 # Test whether the proportion of pneumothorax differs between twins and singleton
   #births
-
+prop.test(table_pneumo)
 
 
 
@@ -94,12 +94,14 @@ rownames(table_pneumo) <- c("Not twin", "Twin")
 # Chi-squared test
 #####################
 # Is sex associated with being a twin in low birthweight infants?
-chsq_surgery <- chisq.test(vlbw$sex, vlbw$twn)
+chsq_sex <- chisq.test(vlbw$sex, vlbw$twn)
 
 # In-class question:
 # Extract out the p-value from the chi-squared test
+names(chsq_sex)
+chsq_sex$p.value
 
-
+chisq.test(table(vlbw$sex, vlbw$twn))
 
 
 
@@ -109,14 +111,26 @@ chsq_surgery <- chisq.test(vlbw$sex, vlbw$twn)
 #####################
 # Relative risk/ risk ratio and odds ratio
 #####################
-epi_pneumo <- epitab(table_pneumo, method = "riskratio")
+#install.packages("epitools")
+library(epitools)
+# Use rev = "columns" to make sure we are looking at risk of pneumothorax
+epi_pneumo <- epitab(table_pneumo, method = "riskratio", rev = "columns")
 epi_pneumo
 
+# check by-hand
+p1 <- 6 / 42
+p2 <- 17 / 132
+p1 / p2
 
 # In-class question:
 # Extract out the odds ratio and its corresponding confidence interval
+epitab(table_pneumo, method = "oddsratio", rev = "columns")
 
+epi_odds <- epitab(table_pneumo, rev = "columns")
+epi_odds$tab[2, c("oddsratio", "lower", "upper")]
 
+# check OR by hand
+(p1 / (1 - p1)) / (p2 / (1 - p2))
 
 
 
@@ -127,7 +141,7 @@ epi_pneumo
 #####################
 # Power calculations
 #####################
-# Compute power when 
+# Compute sample size when 
 # - The difference in means is 0.1
 # - The standard deviation is 1
 # - We want 90% power
@@ -140,3 +154,6 @@ power.t.test(delta = 0.1, power = 0.9, type = "two.sample", alternative =
 #- The difference in means is 15
 #- The standard deviation is 10
 #- The sample size in each group is 10
+power.t.test(n = 10, sd = 10, delta = 15, type = "two.sample", alternative = 
+                 "two.sided")
+
