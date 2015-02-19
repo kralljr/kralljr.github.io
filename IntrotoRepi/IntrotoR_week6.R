@@ -40,7 +40,7 @@ str(vlbw)
 
 # Number of unique values
 n_distinct(vlbw$twn)
-table(vlbw$twn, exclude = NULL)
+table(vlbw$twn)
 
 
 
@@ -51,7 +51,6 @@ vlbw_dup <- rbind(vlbw, vlbw)
 dim(vlbw_dup)
 
 vlbw_dup <- distinct(vlbw_dup)
-all.equal(vlbw_dup, vlbw)
 
 
 
@@ -70,12 +69,11 @@ vlbw_3 <- select(vlbw, bwt, gest)
 # Same way using base R
 vlbw_2 <- vlbw[, c("bwt", "gest")]
 
-all.equal(vlbw_2, vlbw_3)
 
 
 # In-class exercise 1:
 # Select the first 5 columns of vlbw_all
-
+vlbw_new <- select(vlbw_all, 1 : 5)
 
 
 
@@ -86,7 +84,7 @@ vlbw_3 <- select(vlbw, -bwt, -gest)
 
 #using base R
 vlbw_2 <- vlbw[, -which(colnames(vlbw) %in% c("bwt", "gest"))]
-all.equal(vlbw_2, vlbw_3)
+
 
 
 
@@ -101,8 +99,8 @@ vlbw_2 <- vlbw[vlbw$gest >= 39, ]
 
 # In-class exercise 2:
 # Subset the data to female twins with pneumothorax
-
-
+fem_twn_pneu <- filter(vlbw, sex == "female" & twn == 1 & pneumo == 1)
+fem_twn_pneu <- filter(vlbw, sex == "female", twn == 1, pneumo == 1)
 
 
 ####
@@ -111,7 +109,6 @@ vlbw_3 <- slice(vlbw, 1 : 5)
 
 #using base R
 vlbw_2 <- vlbw[1 : 5, ]
-all.equal(vlbw_2, vlbw_3)
 
 
 
@@ -123,6 +120,7 @@ all.equal(vlbw_2, vlbw_3)
 # Renaming variables
 head(select(vlbw, 2 : 4))
 vlbw_2 <- rename(vlbw, Sex = sex)
+vlbw_2 <- rename(vlbw, InfantID = id)
 
 #using base R
 colnames(vlbw_2)[colnames(vlbw_2) == "Sex"] <- "sex"
@@ -141,10 +139,10 @@ head(vlbw_2)
 
 
 # In dplyr,
-vlbw_2 <- mutate(vlbw, full_term = 1 * (vlbw$gest >= 39))
+vlbw_2 <- mutate(vlbw, full_term = 1 * (gest >= 39))
 vlbw_2
 
-all.equal(full_term, vlbw_2$full_term)
+
 
 
 ####
@@ -178,18 +176,18 @@ vlbw_2
 
 ####
 # Using `arrange` to sort your data
-vlbw_3 <- arrange(vlbw, gest)
+vlbw_3 <- arrange(vlbw, gest, id)
 vlbw_3
 
 vlbw_2 <- vlbw[order(vlbw$gest), ]
 vlbw_2
 
-all.equal(vlbw_2, vlbw_3)
 
 
 # In-class exercise 3:
-# Sort the data by birthweight, gestation, and sex
-
+# Sort the data by birthweight, gestation, then sex
+vlbw_sort <- arrange(vlbw, bwt, gest, sex)
+arrange(vlbw, desc(bwt), gest)
 
 
 
@@ -204,8 +202,8 @@ all.equal(vlbw_2, vlbw_3)
 # mean height by age category, we have to subset our data again.
 
 # Base R:
-tapply(BMI, agecat, mean)
-tapply(height, agecat, mean)
+#tapply(BMI, agecat, mean)
+#tapply(height, agecat, mean)
 
 
 #`group_by` in `dplyr` remembers what variables you want to group by
@@ -256,12 +254,13 @@ summarise(gb_sextwn, mean(gest, na.rm = T))
 summarise_each(gb_sextwn, funs(mean), gest, bwt)
 
 # We can add arguments to our functions:
-summarise_each(gb_sextwn, funs(mean(., na.rm = T)), gest, bwt)
+summarise_each(gb_sextwn, funs(mean(., na.rm = T, trim = 0.2)), gest, bwt)
 
 
 # In-class exercise 4:
 # Compute the 20th percentile of gestational age by sex and twin status
-
+quantile(vlbw$gest, probs = 0.2, na.rm = T)
+summarise(gb_sextwn, quantile(gest, probs = 0.2, na.rm = T))
 
 
 
@@ -309,10 +308,10 @@ n_distinct(vlbw_2$id)
 n_distinct(vlbw$id)
 
 # Now merge-- missing observations?
-m_vlbw <- left_join(vlbw, weights, by = c("id" = "infantID"))
+m_vlbw <- left_join(vlbw_2, weights, by = c("id" = "infantID"))
 n_distinct(m_vlbw$id)
 
-m_vlbw <- full_join(vlbw, weights, by = c("id" = "infantID"))
+m_vlbw <- full_join(vlbw_2, weights, by = c("id" = "infantID"))
 n_distinct(m_vlbw$id)
 
 
@@ -360,7 +359,7 @@ wide_data
 
 #If we want to separate the two files, we can call the second from the 
 # first using the `source` function.
-source("data_clean.R")
+# source("data_clean.R")
 
 
 
