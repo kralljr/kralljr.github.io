@@ -1,4 +1,4 @@
-#  Week 6: linear regression
+#  Week 7: linear regression
 
 # Set working directory
 #setwd("~/Dropbox/IntrotoREpi/data/")
@@ -42,12 +42,13 @@ glimpse(ga_crime)
 # Exploratory data analysis
 #install.packages("epiR")
 library(epiR)
+summary(ga_crime$murder)
 epi.descriptives(ga_crime$murder)
 epi.descriptives(ga_crime$pop)
 
 #Any missing data?
 table(complete.cases(ga_crime))
-
+head(complete.cases(ga_crime))
 
 
 
@@ -111,6 +112,7 @@ lm_murder$coefficients
 #We can use `summary(lm)` to obtain more information about the regression
 s_lm_murder <- summary(lm_murder)
 s_lm_murder
+names(s_lm_murder)
 s_lm_murder$coef
 
 
@@ -143,9 +145,9 @@ s_lm_murder$sigma
 
 # In-class exercise 1:
 # Find the r-squared for the regression of log murder rate on log population
-
-
-
+s_lm_murder$r.squared
+s_lm_murder$r.s
+summary(lm_murder)$r.squared
 
 
 
@@ -164,8 +166,8 @@ s_lm_murder$sigma
 hist(lm_murder$resid, main = "Histogram of residuals", xlab = "Residuals")
 
 # Residuals vs. predictor (population)
-scatter.smooth(ga_crime$pop, lm_murder$resid, main = "Histogram of residuals", 
-               xlab = "Residuals")
+scatter.smooth(ga_crime$lpop, lm_murder$resid, main = "Residuals vs. log population", 
+               xlab = "log Population")
 abline(h = 0, col = "red")
 
 
@@ -213,7 +215,11 @@ lm_murder
 # In-class exercise 2:
 # Extract the estimated coefficients, standard errors, and p-values
 # from the multiple linear regression
-
+lm_murder$coef
+summary(lm_murder)$coef[, c(1, 2, 4)]
+scoef <- summary(lm_murder)$coef
+scoef <- data.frame(scoef)
+select(scoef, Estimate)
 
 
 
@@ -281,6 +287,8 @@ summary(lm_murder)$coef
 #- What is the mean log murder rate for large agencies?
 #- What is the mean log murder rate for small agencies?
 
+lm_murder$coef[1] + lm_murder$coef[3]
+
 
 
 
@@ -290,6 +298,7 @@ summary(lm_murder)$coef
 #Changing the reference category
 # What are the levels?
 ga_crime$popcat <- factor(ga_crime$popcat)
+class(ga_crime$popcat)
 levels(ga_crime$popcat)
 # Change the levels
 ga_crime$popcat <- factor(ga_crime$popcat, levels = c("small", "medium",
@@ -300,6 +309,10 @@ lm_murder
 
 # In-class exercise 4: Rerun the above regression, changing the reference 
 # category to medium
+ga_crime$popcat <- factor(ga_crime$popcat, levels = c("medium", "small", 
+   "large"))
+lm_murder <- lm(lmurder ~ popcat, data = ga_crime)
+lm_murder
 
 
 
@@ -340,9 +353,10 @@ lm_murder$coef[1] + lm_murder$coef[3]
 #b = list(name of variable, reference category))
 
 contrast(lm_murder, a = list(popcat = c("small", "medium", "large")), 
-  b = list(popcat = c("medium")))
+  b = list(popcat = c("small")))
 
 # using lm results
+lm_murder$coef
 lm_murder$coef[1] - (lm_murder$coef[1] + lm_murder$coef[2])
 (lm_murder$coef[1] + lm_murder$coef[3]) - (lm_murder$coef[1] + lm_murder$coef[2])
 
@@ -368,6 +382,7 @@ lm_murder$coef[1] - (lm_murder$coef[1] + lm_murder$coef[2])
 #with one categorical predictor, we use the `anova` function on an `lm` object.
 # Sample code:
 # anova(linear regression model)
+lm_murder <- lm(lmurder ~ popcat, data = ga_crime)
 anova_murder <- anova(lm_murder)
 anova_murder
 names(anova_murder)
