@@ -81,8 +81,8 @@ lm(bwt ~ gest : dead, data = vlbw)
 
 # In-class exercise 1:
 # Does the association between gestational age and birthweight differ
-# by sex? 
-
+# by alive status? 
+summary(lm_gest_d )$coef[4, 4]
 
 
 
@@ -91,6 +91,7 @@ lm(bwt ~ gest : dead, data = vlbw)
 # pneumothorax?
 # - Two categorical covariates
 # - Same as two-way ANOVA
+summary(lm(bwt ~ pneumo + dead, data = vlbw))
 lm_pneu_d <- lm(bwt ~ pneumo * dead, data = vlbw)
 lm_pneu_d
 anova(lm_pneu_d)
@@ -135,7 +136,10 @@ abline(a = new_int, b = coef1[2] + coef1[3], col = "green")
 # In-class exercise 2:
 # How much more variability in birthweight is explained by the spline model
 # compared to the model with only gestational age?
-
+s1 <- summary(vlbw_spl)
+names(s1)
+s1$r.squared
+summary(lm_gest)$r.squared
 
 
 
@@ -159,12 +163,14 @@ summary(lm_gest_spl2)$coef
 # Is gestational age associated with survival status?
 glm_d <- glm(dead ~ gest, data = vlbw, family = "binomial")
 glm_d
-summary(glm_d)
+summary(glm_d)$coef
 
 # The log odds of death associated with a one week increase in gestational 
 # age is -0.72, 
 # The log odds ratio of death comparing infants who differ by one week 
 # in gesational age is -0.72
+
+exp(log(5))
 
 exp(glm_d$coef[2])
 # The odds ratio of death comparing infants who differ by one week 
@@ -180,9 +186,9 @@ glm(bwt ~ gest, data = vlbw)
 # In-class exercise 3:
 # What is the odds ratio of death comparing infants with pneumothorax to 
 # infants without pneumothorax adjusted for birthweight and gestational age?
-
-
-
+g1 <- glm(dead ~ pneumo + bwt + gest, data = vlbw, family = "binomial")
+exp(g1$coef[2])
+summary(g1)$coef
 
 #Log-linear or Poisson models
 # glm(y ~ x, data = dat, family = "poisson")
@@ -196,7 +202,7 @@ glm(bwt ~ gest, data = vlbw)
 # Survival data and Kaplan-Meier curves
 # Load package and data
 library(survival)
-data(heart)
+data(ovarian)
 # Create survival data
 surv_cancer <- Surv(ovarian$futime, ovarian$fustat)
 # Plot Kaplan-Meier curves for two chemotherapy treatments
