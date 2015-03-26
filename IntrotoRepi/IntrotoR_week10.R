@@ -91,7 +91,7 @@ g1 + theme(axis.text = element_blank())
 
 # In-class exercise 1:
 # Create a plot of ozone vs. temperature with no tick marks and no grid
-
+g1 + theme(axis.ticks = element_blank(), panel.grid = element_blank())
 
 
 
@@ -116,6 +116,7 @@ g1 + theme(legend.title = element_blank(), legend.position = "top")
 
 # But those colors are ugly!  I don't know what those numbers are!
 labs1 <- c("May", "June", "July", "August", "September")
+levels(factor(airquality$Month))
 cols <- seq(1, 5)
 g1 + scale_color_manual(labels = labs1, name = "", values = cols)
 
@@ -141,7 +142,8 @@ g1 + scale_colour_brewer(palette = "Dark2")
 # Specify sequential palette 
 cols <- brewer.pal(9, "Oranges")
 # Usual plot with color for wind speed
-g2 <- ggplot(data = airquality, aes(x = Temp, y = Ozone, colour = Wind)) + geom_point() + 
+g2 <- ggplot(data = airquality, aes(x = Temp, y = Ozone, colour = Wind)) + 
+    geom_point() + 
     ggtitle("Temperature vs. Ozone") + xlab("Temperature") + ylab("Ozone")
 g2
 # Change colors specifying low and high
@@ -243,7 +245,7 @@ grid.arrange(g1, g2, g3, g4)
 # Hint: use gather function and specify arguments:
 # 1. data, 2. name of column for variables, 3. name of column for values, 
 # 4. what variables do you want to gather (or not gather)
-# gaq <- 
+gaq <- gather(airquality, variable, value, -Month, -Day)
 
 ggplot(gaq, aes(x = value, fill = Month)) + geom_histogram() + 
     facet_wrap( ~ variable, scales = "free")
