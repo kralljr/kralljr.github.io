@@ -1,0 +1,48 @@
+---
+title: "Introduction to R markdown"
+author: "Jenna Krall"
+date: "April 2, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** *knitr* button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+# Header
+## Subheader
+### Subsubheader
+
+
+- List item 1
+- List item 2
+    - Sublist item 1
+    - Sublist item 2
+- List item 3
+
+1. List item 1
+2. List item 2
+3. List item 3
+
+```{r}
+library(knitr)
+kable(summary(cars))
+```
+
+
+You can also embed plots, for example:
+
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+The mean of distance is `r mean(cars$dist)`.  The mean speed is `r mean(cars$speed)`.
+
+
+```{r}
+library(dplyr)
+cars <- filter(cars, dist < 100)
+```
+
+The mean of distance is `r mean(cars$dist)`.  The mean speed is `r mean(cars$speed)`.  You need to load the dplyr package using `library(dplyr)`.
