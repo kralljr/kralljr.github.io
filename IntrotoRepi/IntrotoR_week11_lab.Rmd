@@ -1,0 +1,82 @@
+---
+title: "Intro to R for Epidemiologists"
+---
+
+
+
+
+# Lab 11 (4/2/15)
+
+For this lab, you will use R Markdown and `knitr` to recreate this report *exactly*, including this paragraph.  Specifically, use the `mtcars` dataset in R to recreate the **English text, table, and figure** you see here in an html file like this one.  Note: All the results printed in the "Introduction" section should be created using in-line R code.  Remember to:
+
+- Use markdown to create headers, lists, bold, italics
+- Name your code chunks
+- Use code chunk options
+
+## Introduction
+
+The R dataset `mtcars` has `r length(mtcars)` variables and `r length(mtcars$am)` observations. The average fuel consumption reported was `r round(mean(mtcars$mpg),2)` mpg with a standard deviation of `r round(sd(mtcars$mpg),2)`. The average horsepower was `r round(mean(mtcars$hp),2)` (sd=`r round(sd(mtcars$hp),2)`).
+
+In this report, we create:
+
+1. A table displaying means for each variable by transmission type
+2. A scatterplot of miles per gallon (MPG) and horsepower by transmission type
+
+##Table
+```{r setup, eval = T, echo = F, message = F, warning = F}
+# Set working directory
+setwd("~/Dropbox/IntrotoREpi/labs/week11")
+
+# Load libraries
+library(knitr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+# Load data
+data(mtcars)
+```
+
+
+```{r table, eval = T, echo = T}
+# Make transmission a factor variable
+mtcars$am <- factor(mtcars$am, levels = c(0,1), labels = c("automatic", 
+  "manual"))
+# Group data by transmission
+gcars <- group_by(mtcars, am)
+# Get means for each variable
+t1 <- summarise_each(gcars, funs(mean(., na.rm = T)), mpg, disp : qsec)
+# Print knitr table
+kable(t1, digits = 2, 
+  caption = "Means of Fuel Consumption and Auto Design Elements")
+```
+
+
+##Figure 
+```{r plot, eval = T, echo = F}
+# Set up ggplot
+ggplot(mtcars, aes(x=hp, y=mpg, color=am)) + 
+  # Add points
+  geom_point(size=3.5,  alpha = I(0.5)) +
+  # Add text
+  xlab("Horsepower") + ylab("Miles per gallon (MPG)") + 
+  ggtitle("MPG and Horsepower by Transmission Type") +
+  # Change colors
+  scale_color_manual(name = "", values=c("red", "blue"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
