@@ -1,0 +1,240 @@
+---
+title: "Introduction to R for Epidemiologists"
+author: "Jenna Krall, PhD"
+date: "Thursday, April 9, 2015"
+output: html_document
+---
+
+
+Last week:
+
+- Introduction to knitr and markdown
+- How to format text
+- How to include code chunks
+- In-line code
+- Intro to code chunk options
+
+Today:
+
+*Note: you will need the `vlbw.csv` dataset for this lecture. 
+
+- More markdown
+- Header options
+- More code chunk options
+
+    - eval and echo
+    - message and warning
+    - global options
+    - cache
+- Figures in R Markdown
+
+    - size
+    - captions
+    - alignment
+    
+- External code
+- Output in PDF and Word
+- Introduction to functions
+
+# More markdown
+
+Can also create linked urls: <http://jennakrall.com/IntrotoRepi/>
+
+# Header options
+
+## theme and highlight
+
+## table of contents and numbered sections
+
+# More code chunk options
+
+## eval and echo
+
+Recall: 
+
+- eval = TRUE or FALSE depending on whether you want to run code
+- echo = TRUE or FALSE depending on whether you want to show code
+
+## message and warning
+
+
+
+```{r dplyrmess}
+library(dplyr)
+```
+
+
+In-class exercise 1: Change the knitr options for the code below to show only the plot.
+
+```{r ggplotwarn}
+library(ggplot2)
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+
+
+
+
+
+
+
+## cache
+
+
+```{r cache0}
+k <- 20000
+```
+
+```{r cache1, eval = F}
+seq1 <- seq(1, 100000)
+
+minx <- vector()
+for(i in 1 : k) {
+    x <- sample(seq1, 1000)
+    minx[i] <- min(x) 
+}
+print(length(minx))
+```
+
+
+## global options
+
+
+I want to set eval = F and echo = F for all chunks
+
+```{r knitr_options}
+# Load knitr package
+library(knitr)
+
+# Set global options for echo, eval
+opts_chunk$set(echo = T, eval = T, message = F, warning = F)
+
+# Set directory for this file (only necessary if you want code to run somewhere other than where the file is located)
+#opts_knit$set(root.dir = "~/Dropbox/IntrotoRepi/data")
+```
+
+
+
+# Figures
+
+### size
+
+
+```{r figunsize}
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+```{r figsize, fig.height = 3, fig.width = 10}
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+
+```{r figsizeout, out.width = "300px"}
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+### captions
+
+```{r figcap, fig.height = 3, fig.width = 3, fig.cap = "Figure 1. Plot of ozone vs. temperature"}
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+### alignment
+
+
+```{r figalleft, warning = F, fig.align = "left", fig.height = 3, fig.width = 3}
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+
+```{r figalcenter, warning = F, fig.align = "center", fig.height = 3, fig.width = 3}
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+# External code
+
+
+## Source code
+
+```{r src}
+source("class_exfile1.R")
+```
+
+## Read chunk
+
+```{r rchunk}
+read_chunk("class_exfile1.R")
+```
+ 
+### Here is our figure
+
+```{r g1, fig.cap = "Figure 1. Our first figure read externally"}
+```
+
+### Here is our table
+
+To include captions, may need to specify `format = "pandoc"` in `kable()` and then specify `results = 'asis'` in the code chunk.
+
+```{r tab1, results='asis'}
+```
+
+
+In-class exercise 2: Modify the file `class_exfile1.R` and this file to include a table of standard deviations similar to tab1.
+
+# Output in PDF and Word
+
+# Google maps in R markdown output
+
+```{r beach, results = 'asis', eval = F}
+library(googleVis)
+
+# specify options
+op <- options(gvis.plot.tag='chart')
+# specify names
+jensen <- data.frame(matrix(c("Jensen Beach, FL", "Jensen Beach"), nrow = 1))
+colnames(jensen) <- c("loc", "tip")
+
+# set up map
+map1 <- gvisMap(jensen, "loc", "tip", options = list(zoomLevel = 5))
+plot(map1)
+
+```
+
+
+
+# Introduction to functions
+
+```{r myfun}
+myfun(2, 3)
+```
+
+
+```{r ors}
+vlbw <- read.csv("vlbw.csv")
+
+#OR of dead comparing pneumo to not
+ps <- tapply(vlbw$dead, vlbw$pneumo, mean, na.rm = T)
+p_1 <- ps[2]
+p_2 <- ps[1]
+odds_1 <- p_1 / (1 - p_1)
+odds_2 <- p_2 / (1 - p_2)
+odds_1 / odds_2
+
+
+```
+
+
+
+In-class exercise 3: Write a function (orfun) to estimate the odds ratio from two vectors.  Assume x and y are 0 for unexposed/diseased, 1 for exposed/diseased
+
+```{r ex3, eval = F}
+orfun(vlbw$pneumo, vlbw$dead)
+orfun(vlbw$twn, vlbw$dead)
+
+
+library(epitools)
+epitab(vlbw$dead, vlbw$pneumo)
+epitab(vlbw$pneumo, vlbw$dead)
+epitab(vlbw$twn, vlbw$dead)
+```
+
