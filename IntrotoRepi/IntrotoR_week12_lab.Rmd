@@ -1,0 +1,84 @@
+---
+title: "Intro to R for Epidemiologists"
+subtitle: Lab 12
+author: "Your name"
+date: "Thursday, April 9, 2015"
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    theme: cosmo
+    toc: true
+---
+
+```{r knitr_options, echo = F, warning = F, message = F}
+# Load libraries
+library(ggplot2)
+library(dplyr)
+library(knitr)
+
+# Set global options
+opts_chunk$set(echo = F, eval = T, message = F, warning = F, results = 'asis')
+```
+
+For this lab, you will use R Markdown and `knitr` to recreate this report.  Your lab only needs to include the header (above this paragraph) and the numbered sections below starting with *Introduction*.  You will need the `diabetes` dataset from lab 8 and the `tab_diab` object from Homework 1.  
+
+
+Instructions:
+
+1. Create a header with title, subtitle, author, and date
+2. Change the options for the html_document output to allow figure captions, numbered sections, and a table of contents.  Additionally, change the theme to cosmo.
+3. In a code chunk, set global `knitr` options and load all the packages you need.
+4. In a code chunk, read in your dataset `diabetes.csv` and read the chunks for the two external files `exfile1.R` and `exfile2.R`.
+5. Use the information in `exfile1.R` and `exfile2.R` to bring in the chunks corresponding to the Tables and Figure.  Note: you should not have any R code written in this file in the Tables and Figure section.
+6. Set up the Introduction, Tables, and Figure sections.
+7. Set up the Function section.  Hint: In the file `exfile1.R`, I've created an R object called `cat1`.  Use in-line text to include this picture in the output file. 
+
+```{r data}
+diabetes <- read.csv("diabetes.csv", stringsAsFactors = F)
+read_chunk("exfile1.R")
+read_chunk("exfile2.R")
+
+```
+
+```{r exfile1}
+```
+
+```{r exfile2}
+
+```
+
+
+
+#Introduction
+
+The `diabetes` dataset has `r nrow(diabetes)` observations and `r ncol(diabetes)` variables. In this report, we create:
+
+ 1. A table displaying means and number of observations for the diabetes dataset as in Homework 1. 
+ 
+ 2. A table displaying the odds ratios for the diabetes dataset as in Lab 8.
+ 
+ 3. A plot displaying the odds ratios from Table 2 and corresponding 95% confidence intervals.
+
+#Tables
+
+```{r tabdiab}
+
+```
+
+```{r or_df}
+
+```
+
+#Figure
+```{r figure, fig.cap = "Figure 1. Associations between covariates and diabetes", fig.width = 6, fig.height = 4}
+```
+
+# Functions
+
+Cute cat function courtesy of Scott Chamberlain <http://rforcats.net/>.
+
+```{r cat}
+```
+
+`r cat1`

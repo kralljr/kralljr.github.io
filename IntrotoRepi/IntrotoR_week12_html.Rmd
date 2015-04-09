@@ -2,7 +2,12 @@
 title: "Introduction to R for Epidemiologists"
 author: "Jenna Krall, PhD"
 date: "Thursday, April 9, 2015"
-output: html_document
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    theme: journal
+    toc: yes
 ---
 
 
@@ -59,14 +64,14 @@ Recall:
 
 
 
-```{r dplyrmess}
+```{r dplyrmess, message = F}
 library(dplyr)
 ```
 
 
 In-class exercise 1: Change the knitr options for the code below to show only the plot.
 
-```{r ggplotwarn}
+```{r ggplotwarn, echo = F, warning = F}
 library(ggplot2)
 ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
 ```
@@ -81,11 +86,11 @@ ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
 ## cache
 
 
-```{r cache0}
-k <- 20000
+```{r cache0, cache = T}
+k <- 2
 ```
 
-```{r cache1, eval = F}
+```{r cache1, cache = T, dependson = "cache0"}
 seq1 <- seq(1, 100000)
 
 minx <- vector()
@@ -115,6 +120,8 @@ opts_chunk$set(echo = T, eval = T, message = F, warning = F)
 
 
 
+
+
 # Figures
 
 ### size
@@ -134,6 +141,8 @@ ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
 ```
 
 ### captions
+
+
 
 ```{r figcap, fig.height = 3, fig.width = 3, fig.cap = "Figure 1. Plot of ozone vs. temperature"}
 ggplot(data = airquality, aes(x = Temp, y = Ozone)) + geom_point()
@@ -181,11 +190,16 @@ To include captions, may need to specify `format = "pandoc"` in `kable()` and th
 
 In-class exercise 2: Modify the file `class_exfile1.R` and this file to include a table of standard deviations similar to tab1.
 
+
+```{r tab2, results='asis'}
+
+```
+
 # Output in PDF and Word
 
 # Google maps in R markdown output
 
-```{r beach, results = 'asis', eval = F}
+```{r beach, results = 'asis', eval = T}
 library(googleVis)
 
 # specify options
