@@ -85,6 +85,7 @@ make_fah(30)
 
 
 
+
 ######
 # Creating a function to generate the output we want
 
@@ -106,11 +107,25 @@ odds_1 / odds_2
 
 
 #In-class exercise 1: Write a function (orfun) to estimate the odds ratio
-# from two vectors.  Assume x and y are 0 for unexposed/diseased, 
+# from two vectors.  Assume x and y are 0 for unexposed/disease free, 
 # 1 for exposed/diseased
+
+orfun <- function(x, y) {
+    #OR of dead comparing pneumo to not
+    ps <- tapply(y, x, mean, na.rm = T)
+    #proportion of dead in pneumo and non-pneumo
+    p_1 <- ps[2]
+    p_2 <- ps[1]
+    #odds of death in pneumo and non-pneumo
+    odds_1 <- p_1 / (1 - p_1)
+    odds_2 <- p_2 / (1 - p_2)
+    odds_1 / odds_2
+    
+}
 
 orfun(vlbw$pneumo, vlbw$dead)
 orfun(vlbw$twn, vlbw$dead)
+orfun(vlbw$sex, vlbw$dead)
 
 
 library(epitools)
@@ -180,6 +195,7 @@ make_fah <- function(celsius) {
 
 make_f_1 <- make_fah(cels_temp)
 names(make_f_1)
+class(make_f_1)
 make_f_1
 make_fah(30)
 
@@ -387,9 +403,9 @@ gfun <- function(ORdat, outcome, cols, size1) {
 # First get data
 dat1 <- glmOR(diab, vars, outcome)
 # Try plot fun
-gfun(ORdat = dat1, outcome = "Diabetes", cols = c("red", "blue"), 
+gfun(ORdat = dat1, outcome = "Diabetes", cols = "red", 
      size1 = 18)
-gfun(ORdat = dat1, outcome = "diab1", cols = c("purple", "orange"), 
+gfun(ORdat = dat1, outcome = "diab1", cols = "purple", 
      size1 = 6)
 
 
@@ -401,9 +417,46 @@ gfun(ORdat = dat1, outcome = "diab1", cols = c("purple", "orange"),
 
 # In-class exercise 2: Revise the previous function to include an 
 #  argument for the horizontal line color.
+gfun <- function(ORdat, outcome, cols, size1, colhline) {
+    
+    g1 <- ggplot(data = ORdat, aes(x = type, y = or, colour = type)) +
+        # Add ORs and confidence intervals
+        geom_point(size = 3, shape = 20) + 
+        geom_errorbar(aes(ymin = lb, ymax = ub, colour = type), 
+                      width = 0) +
+        # Change plotting colors
+        scale_color_manual(values = cols, name = "") +   
+        # Add axis labels
+        ylab("Odds ratio") +
+        xlab("") +
+        # Add title
+        ggtitle(paste("Covariates associated with", outcome)) +    
+        
+        # Get rid of grey background
+        theme_bw() +
+        
+        # Change size of labels
+        theme(axis.text.y = element_text(size = size1),
+              # Angle x axis labels
+              axis.text.x = element_text(size = size1, angle = 20, 
+                                         hjust = 1, 
+                                         vjust = 1), legend.text = element_text(size = size1),
+              axis.title = element_text(size = size1),
+              # Remove legend
+              legend.position = "none", 
+              plot.title = element_text(size = size1),
+              strip.text = element_text(size = size1)) + 
+        # Add horizontal line at 1
+        geom_hline(aes(yintercept = 1), colour = colhline, 
+                   linetype = "dashed") 
+    
+    # Add faceting by type with free axes and 2 columns
+    g1 + facet_wrap(~ variable, scales = "free", ncol = 2)
+}
 
 
-
+gfun(ORdat = dat1, outcome = "diab1", cols = "purple", 
+     size1 = 6, colhline = "orange")
 
 
 
@@ -459,7 +512,7 @@ gfun <- function(ORdat, outcome, cols = c("purple", "orange"), size1 = 18) {
 }
 
 
-gfun(dat1, "Diabetes")
+gfun(dat1, "Diabetes", cols = "red")
 
 
 
