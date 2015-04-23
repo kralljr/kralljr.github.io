@@ -1,0 +1,163 @@
+---
+title: "Introduction to R for Epidemiologists"
+author: "Jenna Krall"
+date: "Thursday April 23, 2015"
+output: html_document
+---
+
+```{r knitr_options, echo = F, message = F, warning = F}
+# Load packages
+library(knitr)
+library(dplyr)
+library(pander)
+library(htmlTable)
+library(ReporteRs)
+
+# Set global options for echo, eval
+opts_chunk$set(echo = T, eval = T, message = F, warning = F)
+
+# Set directory for this file (only necessary if you want code to run somewhere other than where the file is located)
+opts_knit$set(root.dir = "~/Dropbox/IntrotoRepi/data")
+```
+
+# Conditional formatting
+
+
+## Example in rmarkdown using pander
+
+- Useful for pandoc/markdown documents
+- Only useful for bold/italicized formatting
+- Can be converted to MS word
+- Updated 2/20/15
+
+
+### Custom highlighting
+
+```{r}
+
+# Load and organize data
+load("tab_diab.RData")
+tab_diab <- select(tab_diab, 1 , 7,  10)
+tab_diab[, "Meandiff_Pval"] <- round(tab_diab[, "Meandiff_Pval"], 3)
+
+
+# Create sequence of even rows
+seqs1 <- seq(2, nrow(tab_diab), by = 2)
+seqs1
+# Add bold to rows
+emphasize.strong.rows(seqs1)
+# Show table
+pander(tab_diab)
+
+# Find row/col entries of significance
+wh1 <- which(tab_diab < 0.05 & tab_diab >= 0, arr.ind = T)
+wh1
+# Add bold
+emphasize.strong.cells(wh1)
+pander(tab_diab)
+
+# Add italicized
+emphasize.cells(wh1)
+pander(tab_diab)
+
+```
+
+
+### Better formatting for R output
+```{r}
+# Run standard linear model
+glm1 <- lm(Ozone ~ Temp, data = airquality)
+# Nice markdown output
+pander(glm1)
+pander(summary(glm1))
+```
+
+
+
+### Add significance stars
+
+```{r}
+# Resave output
+tab_diab2 <- tab_diab
+# Add stars to pvalue
+tab_diab2[, "Meandiff_Pval"] <- add.significance.stars(tab_diab[, "Meandiff_Pval"])
+pander(tab_diab2)
+```
+
+
+
+## Example in html using htmlTable
+
+- Uses html formatting
+- Can control row/column shading
+- Updated 4/21/15
+- Does **not** work with MS word 
+- specify `results = "asis"`
+
+
+### Row shading
+```{r, results = "asis"}
+# Get alternating row color shading
+cols <- rep(c("white", "grey"), length = nrow(tab_diab))
+# Get html table
+h1 <- htmlTable(tab_diab, col.rgroup = cols)
+h1
+```
+
+
+
+### Reformat pvalues
+
+```{r}
+tab_diab[, 3] <- txtPval(tab_diab[, 3])
+h1 <- htmlTable(tab_diab, col.rgroup = cols)
+h1
+
+```
+
+
+
+### Add more formatting
+```{r}
+# Define text colors for each cell
+cols2 <- matrix(rep(c("color: #FF00FF;", "color: #6666FF;"), 
+  length = nrow(tab_diab) *3), ncol = 3, byrow = F)
+h1 <- htmlTable(tab_diab, css.cell = cols2)
+h1
+
+# Define cgroups
+# Add alignment
+# Add captions
+h1 <- htmlTable(tab_diab, cgroup = c("name", "results"), n.cgroup = c(1, 2), 
+  align.cgroup = "l", align = c("c", "l", "l"), col.columns = c("grey", 
+  "white", "white"), caption = "Table 1. tab_diab", pos.caption = "bottom")
+h1
+
+
+
+```
+
+
+
+## Example in Word using ReporteRs
+
+- Does not work with `knitr`
+- Creates MS word file
+- Adds objects to file, including formatted tables
+
+
+```{r}
+# Create table
+tabdiabFT <- FlexTable(tab_diab)
+# Modify cell properties
+tabdiabFT[seq(2, nrow(tab_diab), by = 2), ] <- cellProperties(background.color = "grey")
+
+# Define output filename
+doc.filename = "example_table.docx"
+# Define docx
+doc = docx( )
+# Add table
+doc = addFlexTable( doc, tabdiabFT )
+# Write file
+writeDoc( doc, file = doc.filename )
+```
