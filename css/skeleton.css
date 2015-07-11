@@ -359,6 +359,12 @@ label > .label-body {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
   list-style-type: none; }
+ul.teach {
+  list-style-type: disc; 
+  margin: 0 0 2rem 3rem; }
+li.teach {
+  margin: 0;}
+}
 ol {
   list-style: decimal inside; }
 ol, ul {
@@ -373,7 +379,17 @@ ol ul {
 li {
   margin-bottom: 1rem; }
 
-
+  ul.teach2 {
+	  list-style: none;
+	  margin-left: 0;
+	  padding-left: 1em;
+  }
+  ul.teach2 li:before {
+	  display: inline-block;
+	  content: "-";
+	  width: 1em;
+	  margin-left: -1em;
+  }
 /* Code
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 code {
@@ -688,4 +704,5 @@ ul.icons > li:first-child {
 ul.icons > li:first-child:before {
 	top: 0;
 }
+
 
