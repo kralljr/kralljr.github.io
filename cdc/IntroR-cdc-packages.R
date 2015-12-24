@@ -21,7 +21,6 @@
 
 
 install.packages("dplyr")
-install.packages("XLConnect")
 install.packages("Hmisc")
 install.packages("epitools")
 install.packages("contrast")
@@ -35,5 +34,9 @@ install.packages("knitr")
 install.packages("tidyr")
 install.packages("car")
 install.packages("pander")
+install.packages("rmarkdown")
+install.packages("caTools")
+install.packages("bitops")
+install.packages("htmltools")
 
 
