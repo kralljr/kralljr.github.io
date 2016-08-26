@@ -196,6 +196,16 @@ h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 2px; font-weight: 400
 	h6 { font-size: 1.5rem; }
 }
 
+/* Smaller than phablet */
+@media (max-width: 550px) {
+	h1 { font-size: 3.0rem; letter-spacing: 4px;}
+	h2 { font-size: 3.0rem; }
+	h3 { font-size: 3.0rem; }
+	h4 { font-size: 3.0rem; }
+	h5 { font-size: 2.0rem; }
+	h6 { font-size: 1.5rem; }
+}
+
 
 h4.foot1 {
 	text-align: center;
@@ -658,7 +668,7 @@ text-align: center;
 			color: #20b2aa;
 			}
 			*/
-
+}
 
 
 .icon {
