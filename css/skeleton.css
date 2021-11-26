@@ -165,13 +165,17 @@ are based on 10px sizing. So basically 1.5rem = 15px :) */
 html {
 font-size: 52.5%; }
 body {
-	font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+	font-size: 2em; /* currently ems cause chrome bug misinterpreting rems on body element */
 	line-height: 1.6;
 	font-weight: 400;
 	font-family: "Source Sans Pro", "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 color: #4D5656; }
 
+/* h1: my name at top
+h2 nothing?
+h4 section titles
 
+*/
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 h1, h2, h3, h4, h5, h6 {
@@ -179,10 +183,10 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 2rem;
 font-weight: 300; }
 h1 { font-size: 3.0rem; line-height: 1;  
-font-weight: 300; color: #20b2aa; letter-spacing: 2px;	}
-h2 { font-size: 3.6rem; line-height: 1.25; letter-spacing: 2px; font-weight: 300; color: #20b2aa; text-transform: uppercase;}	
+font-weight: 300; color: #42824c; letter-spacing: 2px;	}
+h2 { font-size: 3.6rem; line-height: 1.25; letter-spacing: 2px; font-weight: 300; color: #6f4e87; text-transform: uppercase;}	
 h3 { font-size: 2.5rem; line-height: 1.25;  letter-spacing: 2px; font-weight: 300; color: #4D5656;}
-h4 { font-size: 3.0rem; line-height: 1.25; letter-spacing: 2px; font-weight: 300; color: #20b2aa;}
+h4 { font-size: 3.0rem; line-height: 1.25; letter-spacing: 2px; font-weight: 300; color: #42824c;}
 h5 { font-size: 1.5rem; font-weight: 300; color: #4D5656; }
 h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 2px; font-weight: 300; color: #4D5656; }
 
@@ -210,7 +214,7 @@ h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 2px; font-weight: 300
 h4.foot1 {
 	text-align: center;
 	color: #777;
-
+#d4d428
 }
 p.top {
 	text-align: center;
@@ -240,9 +244,9 @@ h4.header {
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a:hover {
-color: #167d77; }
+color: #d4d428; }
 a {
-color: #20b2aa; }
+color: #42824c; }
 
 /* Buttons
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -553,18 +557,18 @@ display: inline;
 text-align: center;
 			margin-bottom: 0; }
 			.navbar-link {
-				font-size: 16px;
-				font-weight: 400;
+				font-size: 24px;
+				font-weight: 200;
 				letter-spacing: .2rem;
 				margin-right: 35px;
 				text-decoration: none;
 				line-height: 6.5rem;
 				display:inline-block;
-			color: #4D5656; }
+			color: #42824c; }
 			.navbar-link:active {
-			color: #20b2aa; }
+			color: #42824c; }
 			.navbar-link:hover {
-			color: #20b2aa; }
+			color: #d4d428; }
 
 			.has-docked-nav .navbar {
 				position: fixed;
@@ -662,7 +666,7 @@ text-align: center;
 			-webkit-transition: color 0.25s ease-in-out, border-bottom-color 0.25s ease-in-out;
 			-ms-transition: color 0.25s ease-in-out, border-bottom-color 0.25s ease-in-out;
 			transition: color 0.25s ease-in-out, border-bottom-color 0.25s ease-in-out;
-			color: #20b2aa;
+			color: #42824c;
 			}
 			*/
 }
